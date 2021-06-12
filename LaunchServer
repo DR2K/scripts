@@ -1,0 +1,84 @@
+#!/usr/bin/env bash
+cd -- "$(dirname "$0")"
+
+if [[ ! -f $(pwd)/.server_paths  ]]
+then
+	sudo touch $(pwd)/.server_paths
+	sudo chmod 777 $(pwd)/.server_paths
+fi
+
+input="$(pwd)/.server_paths"
+name="${1-"-1"}"
+path="${2-"-1"}"
+startFile="${3-"-1"}"
+MC="${4-"-1"}"
+lOFName=${#name}
+count=1
+
+if [[ $name == "-1" ]]
+then
+	echo "Please run again with at least a server name"
+	exit 0
+fi
+
+if [[ $startFile != "-1"  ]] && [[ ${startFile:(-3):3} != ".sh"  ]]
+then
+	echo "Please make sure that the start file is a *.sh file and/or please make sure to enter the .sh ending when specifying file the file name"
+	exit 0
+fi	
+
+if [[ $path != "-1" ]] && [[ $startFile != "-1" ]] && [[ $MC != "-1" ]]
+then
+	sudo echo "$name|$path|$startFile|$MC" >> $input	
+fi
+
+linesInFile=$(wc .server_paths | awk '{ print $1 }' )
+
+for ((i=1;i<=$linesInFile;i++))
+do
+	line=$(sed "$i!d" .server_paths)
+	if [[ "${line:0:$lOFName}" == "$name" ]]
+	then
+		break
+	else
+		count=$((count+1))
+		line="-1"	
+	fi
+done
+
+if [[ "$line" != "-1" ]]
+then
+	IFS='|'
+	read -ra arr <<< "$line"
+
+	name="${arr[0]}"
+	path="${arr[1]}"
+	startFile="${arr[2]}"
+	MC="${arr[3]}"
+
+fi
+
+if [[ $path == "" ]] || [[ $line == "-1" ]]
+then
+	echo "Please enter the command again like this as it is a new name: LaunchServer NAME(str) PATH(str) STARTFILE(str) isMC(1 for yes, 0 for no)"
+	exit 0
+fi
+
+logName="$(date)-log"
+if [[ ${path:(-1)} == "/"  ]]
+then
+	path=${path%/}
+fi
+
+if [[ ! -d "$path/logs/shell" ]]
+then
+	mkdir "$path"/logs/shell/
+fi
+
+#sudo screen -dmS $name /bin/runBackup "$path" "1" "$startFile" "$MC" sudo echo $(date +%c) >> /home/allLog.txt && echo "Launching server $name" >> /home/allLog.txt 
+#screen -S $name -X multiuser on
+#screen -S $name -X acladd dev
+#screen -S $name -X acladd pi
+#screen -S $name -X acladd abhi
+
+echo "running screen under the name $name; use screen -x $name to access it"
