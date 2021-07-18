@@ -3,6 +3,7 @@
 # Minecraft server automatic backup management script
 # by Nicolas Chan
 # MIT License
+# Edited by Devdeep Rajpal
 #
 # For Minecraft servers running in a GNU screen.
 # For most convenience, run automatically with cron.
