@@ -2,8 +2,7 @@
 
 #  linuxSetup.sh
 #  Scripts
-#
-#  Created by Devdeep Singh Rajpal on 8/14/20.
+
 
 if [! -d "/usr/bin/zsh"]
 do
