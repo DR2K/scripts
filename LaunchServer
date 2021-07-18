@@ -11,23 +11,22 @@ input="$(pwd)/.server_paths"
 name="${1-"-1"}"
 path="${2-"-1"}"
 startFile="${3-"-1"}"
-MC="${4-"-1"}"
 lOFName=${#name}
 count=1
 
 if [[ $name == "-1" ]]
 then
-	echo "Please run again with at least a server name"
+	echo "Please give a server name"
 	exit 0
 fi
 
 if [[ $startFile != "-1"  ]] && [[ ${startFile:(-3):3} != ".sh"  ]]
 then
-	echo "Please make sure that the start file is a *.sh file and/or please make sure to enter the .sh ending when specifying file the file name"
+	echo "Please make sure that the start file is a shell script and to enter the \".sh\" ending when specifying the file name"
 	exit 0
 fi	
 
-if [[ $path != "-1" ]] && [[ $startFile != "-1" ]] && [[ $MC != "-1" ]]
+if [[ $path != "-1" ]] && [[ $startFile != "-1" ]]
 then
 	sudo echo "$name|$path|$startFile|$MC" >> $input	
 fi
@@ -54,13 +53,12 @@ then
 	name="${arr[0]}"
 	path="${arr[1]}"
 	startFile="${arr[2]}"
-	MC="${arr[3]}"
 
 fi
 
 if [[ $path == "" ]] || [[ $line == "-1" ]]
 then
-	echo "Please enter the command again like this as it is a new name: LaunchServer NAME(str) PATH(str) STARTFILE(str) isMC(1 for yes, 0 for no)"
+	echo "For creating a new server, please enter the data like so: LaunchServer <name> <path> <.sh start file>"
 	exit 0
 fi
 
@@ -75,6 +73,7 @@ then
 	mkdir "$path"/logs/shell/
 fi
 
+#TODO : Move this setup to tmate/tmux
 #sudo screen -dmS $name /bin/runBackup "$path" "1" "$startFile" "$MC" sudo echo $(date +%c) >> /home/allLog.txt && echo "Launching server $name" >> /home/allLog.txt 
 #screen -S $name -X multiuser on
 #screen -S $name -X acladd dev
