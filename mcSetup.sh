@@ -2,7 +2,8 @@
 
 #  mcSetup.sh
 #  Scripts
-#  Created by Devdeep Singh Rajpal on 8/9/20.
+#  Created by Devdeep Rajpal on 8/9/20.
+#  Not sure why I made this
 #  
 mkdir minecraft_files
 cd minecraft_files
